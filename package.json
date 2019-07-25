@@ -1,6 +1,6 @@
 {
   "name": "@pika/cli",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "The pika command-line interface",
   "scripts": {
     "build": "./pkg/dist-node/index.bin.js build",
