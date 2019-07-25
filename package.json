@@ -3,8 +3,8 @@
   "version": "0.1.3",
   "description": "The pika command-line interface",
   "scripts": {
-    "build": "./pkg/dist-node/index.bin.js build",
-    "publish": "./pkg/dist-node/index.bin.js publish",
+    "build": "npx @pika/pack build",
+    "publish": "npx @pika/pack publish",
     "format": "prettier --write \"src/**/*.ts\"",
     "version": "npm run build"
   },
