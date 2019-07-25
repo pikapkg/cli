@@ -67,7 +67,7 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
   if (command === 'publish') {
     const {pkg, indent} = await getPackageManifest(cwd);
     if (!pkg.scripts.version) {
-      log(`${chalk.bold('missing "version" script:')} You'll want to create a fresh build after bumping the master package.json version.`);
+      log(`${chalk.bold('missing "version" script:')} You'll need to create a fresh build after bumping the master package.json version.`);
       if (pkg.scripts.build) {
         pkg.scripts.version = 'npm run build';
       } else {

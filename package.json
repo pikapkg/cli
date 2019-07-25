@@ -5,7 +5,8 @@
   "scripts": {
     "build": "./pkg/dist-node/index.bin.js build",
     "publish": "./pkg/dist-node/index.bin.js publish",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "version": "npm run build"
   },
   "publishConfig": {
     "access": "public"
