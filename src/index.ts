@@ -2,6 +2,7 @@ import path from 'path';
 import {promises as fs} from 'fs';
 import yargs from 'yargs-parser';
 import resolveFrom from 'resolve-from';
+import detectIndent from 'detect-indent';
 import execa from 'execa';
 import chalk from 'chalk';
 
@@ -23,11 +24,16 @@ async function runPackage(packageName: string, args: string[]) {
   return execa('npx', [packageName,  ...args], EXECA_OPTIONS);
 }
 
-async function getPackageManifest() {
-  const packageManifestLoc = path.join(__dirname, '../package.json');
+async function getPackageManifest(dir = path.join(__dirname, '..')) {
+  const packageManifestLoc = path.join(dir, 'package.json');
   const packageManifestStr = await fs.readFile(packageManifestLoc, {encoding: 'utf8'});
-  return JSON.parse(packageManifestStr);
+  return {pkg: JSON.parse(packageManifestStr), indent: detectIndent(packageManifestStr).indent || undefined};
 }
+
+async function savePackageManifest(dir, pkg) {
+  return fs.writeFile(path.join(dir, 'package.json'), JSON.stringify(pkg, null, 2) + '\n', {encoding: 'utf8'});
+}
+
 
 function printHelp() {
   log(`
@@ -59,6 +65,20 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
     return [true, !hasLocalInstall && '@pika/pack'];
   }
   if (command === 'publish') {
+    const {pkg, indent} = await getPackageManifest(cwd);
+    if (!pkg.scripts.version) {
+      log(`${chalk.bold('missing "version" script:')} You'll want to create a fresh build after bumping the master package.json version.`);
+      if (pkg.scripts.build) {
+        pkg.scripts.version = 'npm run build';
+      } else {
+        pkg.scripts.version = 'npx @pika/pack';
+      }
+      log(`Adding the following "version" lifecycle script to your package.json... ` + chalk.bold(`"${pkg.scripts.version}"`));
+      await savePackageManifest(cwd, {pkg, indent});
+      log(`Please review & commit this change before publishing.`);
+      return;
+    }
+
     const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/pack');
     const contentsArg = parsedArgs.contents ? [] : ['--contents', parsedArgs.contents || 'pkg/'];
     await runPackage('np', [...commandArgs, ...contentsArg]);
@@ -74,7 +94,7 @@ export async function cli(args: string[]) {
   isNoop = parsedArgs.dryRun || isNoop;
 
   if (parsedArgs.version) {
-    log((await getPackageManifest()).version);
+    log((await getPackageManifest()).pkg.version);
     return output;
   }
   if (command === 'help') {

@@ -3,9 +3,8 @@
   "version": "0.1.2",
   "description": "The pika command-line interface",
   "scripts": {
-    "build": "pack build",
-    "version": "pack build",
-    "publish": "pack publish",
+    "build": "./pkg/dist-node/index.bin.js build",
+    "publish": "./pkg/dist-node/index.bin.js publish",
     "format": "prettier --write \"src/**/*.ts\""
   },
   "publishConfig": {
@@ -47,6 +46,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
+    "detect-indent": "^6.0.0",
     "execa": "^2.0.3",
     "resolve-from": "^5.0.0",
     "yargs-parser": "^13.1.1"
