@@ -1,7 +1,7 @@
 {
   "name": "@pika/cli",
   "version": "0.1.0",
-  "description": "The Pika CLI",
+  "description": "The pika command-line interface",
   "scripts": {
     "build": "pack build",
     "format": "prettier --write \"src/**/*.ts\"",
