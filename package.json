@@ -4,6 +4,7 @@
   "description": "The pika command-line interface",
   "scripts": {
     "build": "pack build",
+    "publish": "pack publish",
     "format": "prettier --write \"src/**/*.ts\""
   },
   "publishConfig": {
