@@ -88,6 +88,11 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
 }
 
 export async function cli(args: string[]) {
+  // Convert: pika help build [...] => pika build --help [...]
+  if (args[2] === 'help' && args[3] && !args[3].startsWith('-')) {
+    return cli([args[0], args[1], args[3], '--help', ...args.slice(4)]);
+  }
+
   const parsedArgs = yargs(args.slice(2));
   const commandArgs = args.slice(3);
   const command = args[2] || 'help';
@@ -103,7 +108,7 @@ export async function cli(args: string[]) {
   }
   const [wasRecognized, recommendedDep] = await runExternalCommand(command, commandArgs, parsedArgs);
   if (!wasRecognized) {
-    log(`Command ${command} not recognized.`);
+    log(`Command ${chalk.bold(command)} not recognized.`);
     printHelp();
     return output;
   }
