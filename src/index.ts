@@ -30,8 +30,8 @@ async function getPackageManifest(dir = path.join(__dirname, '..')) {
   return {pkg: JSON.parse(packageManifestStr), indent: detectIndent(packageManifestStr).indent || undefined};
 }
 
-async function savePackageManifest(dir, pkg) {
-  return fs.writeFile(path.join(dir, 'package.json'), JSON.stringify(pkg, null, 2) + '\n', {encoding: 'utf8'});
+async function savePackageManifest(dir, {pkg, indent}) {
+  return fs.writeFile(path.join(dir, 'package.json'), JSON.stringify(pkg, null, indent || 2) + '\n', {encoding: 'utf8'});
 }
 
 
@@ -76,7 +76,7 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
       log(`Adding the following "version" lifecycle script to your package.json... ` + chalk.bold(`"${pkg.scripts.version}"`));
       await savePackageManifest(cwd, {pkg, indent});
       log(`Please review & commit this change before publishing.`);
-      return;
+      return [true, undefined];
     }
 
     const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/pack');
