@@ -1,0 +1,2 @@
+# cli
+The Pika CLI
