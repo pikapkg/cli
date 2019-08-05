@@ -16,12 +16,12 @@ function log(...args: any[]) {
   console.log(...args);
 }
 
-async function runPackage(packageName: string, args: string[]) {
+async function runPackage(args: string[]) {
   if (isNoop) {
-    log(['npx', packageName,  ...args]);
+    log(['npx', ...args]);
     return;
   }
-  return execa('npx', [packageName,  ...args], EXECA_OPTIONS);
+  return execa('npx', [...args], EXECA_OPTIONS);
 }
 
 async function getPackageManifest(dir = path.join(__dirname, '..')) {
@@ -56,12 +56,12 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
   const cwd = parsedArgs.cwd || process.cwd();
   if (command === 'install') {
     const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/web');
-    await runPackage('@pika/web',  [...commandArgs]);
+    await runPackage([hasLocalInstall ? 'pika-web' : '@pika/web',  ...commandArgs]);
     return [true, !hasLocalInstall && '@pika/web'];
   }
   if (command === 'build') {
     const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/pack');
-    await runPackage('@pika/pack', [...commandArgs]);
+    await runPackage([hasLocalInstall ? 'pika-pack' : '@pika/pack', ...commandArgs]);
     return [true, !hasLocalInstall && '@pika/pack'];
   }
   if (command === 'publish') {
@@ -81,7 +81,7 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
 
     const hasLocalInstall = !!resolveFrom.silent(cwd, 'np');
     const contentsArg = parsedArgs.contents ? [] : ['--contents', parsedArgs.contents || 'pkg/'];
-    await runPackage('np', [...commandArgs, ...contentsArg]);
+    await runPackage(['np', ...commandArgs, ...contentsArg]);
     return [true, !hasLocalInstall && 'np'];
   }
   return [false, undefined];

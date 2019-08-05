@@ -3,8 +3,8 @@
   "version": "0.1.4",
   "description": "The pika command-line interface",
   "scripts": {
-    "build": "npx @pika/pack build",
-    "publish": "npx @pika/pack publish",
+    "build": "npx pika-pack",
+    "publish": "./pkg/dist-node/index.bin.js publish",
     "format": "prettier --write \"src/**/*.ts\"",
     "version": "npm run build"
   },
@@ -38,10 +38,10 @@
     ]
   },
   "devDependencies": {
-    "@pika/pack": "^0.4.0",
-    "@pika/plugin-build-node": "^0.5.0",
-    "@pika/plugin-simple-bin": "^0.5.0",
-    "@pika/plugin-ts-standard-pkg": "^0.5.0",
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.6.0",
+    "@pika/plugin-simple-bin": "^0.6.0",
+    "@pika/plugin-ts-standard-pkg": "^0.6.0",
     "prettier": "^1.16.4",
     "typescript": "^3.5.1"
   },
