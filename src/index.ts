@@ -61,7 +61,7 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
   }
   if (command === 'build') {
     const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/pack');
-    await runPackage('@pika/pack', ['build', ...commandArgs]);
+    await runPackage('@pika/pack', [...commandArgs]);
     return [true, !hasLocalInstall && '@pika/pack'];
   }
   if (command === 'publish') {
