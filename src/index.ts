@@ -64,6 +64,11 @@ async function runExternalCommand(command, commandArgs, parsedArgs): Promise<[bo
     await runPackage([hasLocalInstall ? 'pika-pack' : '@pika/pack', ...commandArgs]);
     return [true, !hasLocalInstall && '@pika/pack'];
   }
+  if (command === 'init') {
+    const hasLocalInstall = !!resolveFrom.silent(cwd, '@pika/init');
+    await runPackage([hasLocalInstall ? 'pika-init' : '@pika/init', ...commandArgs]);
+    return [true, !hasLocalInstall && '@pika/init'];
+  }
   if (command === 'publish') {
     const {pkg, indent} = await getPackageManifest(cwd);
     if (!pkg.scripts.version) {
