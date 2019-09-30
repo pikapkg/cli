@@ -40,10 +40,11 @@ function printHelp() {
 ${chalk.bold('Usage:')}
   pika [command] [flags]
 ${chalk.bold('Commands:')}
-  help                output usage information
-  build               ${chalk.underline('https://www.pika.dev/cli/commands/build')}
-  install             ${chalk.underline('https://www.pika.dev/cli/commands/install')}
-  publish             ${chalk.underline('https://www.pika.dev/cli/commands/publish')}
+  help [command]      output usage information about a command
+  init                ${chalk.underline('https://github.com/pikapkg/init')}
+  build               ${chalk.underline('https://github.com/pikapkg/pack')}
+  install             ${chalk.underline('https://github.com/pikapkg/web')}
+  publish             ${chalk.underline('https://github.com/pikapkg/cli')}
 ${chalk.bold('Global Options:')}
   -v, --version       output the CLI version
   -h, --help          output usage information
